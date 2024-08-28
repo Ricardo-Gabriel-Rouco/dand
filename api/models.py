@@ -3,7 +3,8 @@ from django.core.exceptions import ValidationError
 from model_utils.models import TimeStampedModel, SoftDeletableModel
 
 partyChoices = [
-    ("D&D5th", "D&D5th")
+    ("D&D5th", "D&D5th",),
+    ("GoodSociety", "Good Society")
 ]
 partyStatus = [
     ("RD", "READY"),
@@ -30,7 +31,7 @@ class User(TimeStampedModel, SoftDeletableModel):
     password = models.CharField(
         max_length=12, blank=False, null=False, default=123456)
     characters = models.ForeignKey('Characters', on_delete=models.CASCADE, blank=True, null=True)
-    
+    dmId = models.OneToOneField('Dm', on_delete=models.CASCADE, blank=True, null=True)
     def __str__(self):
         return f"{self.id} {self.name} {self.email} {self.nickname} {self.is_admin}"
 
@@ -38,7 +39,7 @@ class User(TimeStampedModel, SoftDeletableModel):
 class Dm(TimeStampedModel, SoftDeletableModel):
     name = models.CharField(max_length=150, null=False, blank=False)
     dmParty = models.ManyToManyField('Party')
-    userId = models.OneToOneField('User', on_delete=models.CASCADE, blank=True, null=True)
+    
 
 class Party(TimeStampedModel, SoftDeletableModel):
     name = models.CharField(max_length=150, null=False, blank=False)
@@ -63,3 +64,18 @@ class Characters(TimeStampedModel, SoftDeletableModel):
 
     def __str__(self):
         return f"{self.name}{self.nickname} {self.id} {self.level} {self.modifiers}" 
+
+class Desires(TimeStampedModel, SoftDeletableModel):
+    type = models.CharField(max_length=200, blank=False, null=False)
+    description = models.TextField(blank=False, null=False)
+
+    def __str__(self):
+        return f"{self.id} {self.type} {self.description}" 
+
+
+class Relations(TimeStampedModel, SoftDeletableModel):
+    type = models.CharField(max_length=200, blank=False, null=False)
+    description = models.TextField(blank=False, null=False)
+
+    def __str__(self):
+        return f"{self.id} {self.type} {self.description}"

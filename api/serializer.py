@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from .models import User, Characters, Dm, Party
+from .models import User, Characters, Dm, Party, Desires, Relations
 
 
 class ModifiersJsonField(serializers.JSONField):
@@ -49,4 +49,14 @@ class DmSerializer(serializers.ModelSerializer):
 class PartySerializer(serializers.ModelSerializer):
     class Meta:
         model = Party
+        fields = '__all__'
+
+class DesireSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Desires
+        fields = '__all__'
+
+class RelationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Relations
         fields = '__all__'
