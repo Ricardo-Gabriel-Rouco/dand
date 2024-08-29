@@ -27,6 +27,25 @@ class ModifiersJsonField(serializers.JSONField):
         return value
     
 
+class ReputationSerializer(serializers.JSONField):
+    def to_internal_value(self, data):
+        value = super().to_internal_value(data)
+
+        allowed_keys = {"description", "type"}
+        allowed_types = {"positive", "negative"}
+
+        if not isinstance(value, dict):
+            raise ValidationError("El campo debe ser un objeto JSON.")
+
+        extra_keys = set(value.keys()) - allowed_keys
+        if extra_keys:
+            raise ValidationError(f"Se encontraron claves no permitidas: {', '.join(extra_keys)}")
+
+        if 'type' in value and value['type'] not in allowed_types:
+            raise ValidationError("El campo 'type' debe ser 'positive' o 'negative'.")
+
+        return value
+    
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -35,6 +54,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class CharacterSerializer(serializers.ModelSerializer):
     modifiers = ModifiersJsonField()
+    reputation = ReputationSerializer()
     class Meta:
         model = Characters
         fields = '__all__'
