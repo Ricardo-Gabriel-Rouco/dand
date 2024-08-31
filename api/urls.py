@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework import routers
 from api import views
+from .authentication import urls as auth_urls
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSets)
@@ -12,5 +13,6 @@ router.register(r'relations', views.RelationViewSets, basename="relations")
 
 
 urlpatterns=[
-  path('', include(router.urls))
+  path('', include(router.urls)),
+  path('auth/', include(auth_urls))
 ]

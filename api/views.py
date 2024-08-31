@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+
 from .serializer import UserSerializer, CharacterSerializer, DmSerializer, PartySerializer, RelationSerializer, DesireSerializer
 from .models import User, Characters, Dm, Party, Desires, Relations
 
@@ -29,3 +30,4 @@ class RelationViewSets(viewsets.ModelViewSet):
 class DesireWiewSets(viewsets.ModelViewSet):
     queryset = Desires.objects.all()
     serializer_class = DesireSerializer
+    
