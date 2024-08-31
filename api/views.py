@@ -1,12 +1,16 @@
 from rest_framework import viewsets
 
-from .serializer import UserSerializer, CharacterSerializer, DmSerializer, PartySerializer, RelationSerializer, DesireSerializer
-from .models import User, Characters, Dm, Party, Desires, Relations
+from .serializer import UserSerializer, CharacterSerializer, DmSerializer, PartySerializer, RelationSerializer, DesireSerializer, UserProfileSerializer
+from .models import User, Characters, Dm, Party, Desires, Relations, UserProfile
 
 # Create your views here.
-class UserViewSets(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+# class UserViewSets(viewsets.ModelViewSet):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+
+class UserProfileViewSets(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
 
 class CharacterViewSets(viewsets.ModelViewSet):
     queryset = Characters.objects.all()

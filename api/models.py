@@ -1,4 +1,5 @@
 from django.db import models
+from  django.contrib.auth.models import User
 from .validations  import validateLevel, validateArmorClass
 from model_utils.models import TimeStampedModel, SoftDeletableModel
 
@@ -15,18 +16,15 @@ partyStatus = [
 # Create your models here.
 
 
-class User(TimeStampedModel, SoftDeletableModel):
-    name = models.CharField(max_length=150, null=False, blank=False)
-    nickname = models.CharField(max_length=150, null=False, blank=False)
-    email = models.CharField(max_length=150, null=False, blank=False)
+class UserProfile(TimeStampedModel, SoftDeletableModel):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    nickname = models.CharField(max_length=150, null=True, blank=True)
     novice = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
-    password = models.CharField(
-        max_length=12, blank=False, null=False, default=123456)
     characters = models.ForeignKey('Characters', on_delete=models.CASCADE, blank=True, null=True)
     dmId = models.OneToOneField('Dm', on_delete=models.CASCADE, blank=True, null=True)
     def __str__(self):
-        return f"{self.id} {self.name} {self.email} {self.nickname} {self.is_admin}"
+        return f"{self.id} {self.nickname} {self.characters} {self.novice} {self.dmId}"
 
 class Dm(TimeStampedModel, SoftDeletableModel):
     name = models.CharField(max_length=150, null=False, blank=False)
@@ -38,7 +36,7 @@ class Party(TimeStampedModel, SoftDeletableModel):
     partyState = models.CharField(max_length=150,choices=partyStatus, blank=False, null=False)
     partyIntro = models.TextField(blank=False, null=False)
     partyRules = models.TextField(blank=False, null=False)
-    members = models.ForeignKey("User", on_delete=models.CASCADE)
+    members = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):
         return f"{self.id} {self.name} {self.partySystem} {self.partyState} {self.partyIntro} {self.partyRules} {self.members}"
