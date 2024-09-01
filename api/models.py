@@ -14,8 +14,6 @@ partyStatus = [
 ]
 
 # Create your models here.
-
-
 class UserProfile(TimeStampedModel, SoftDeletableModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     nickname = models.CharField(max_length=150, null=True, blank=True)
@@ -26,6 +24,8 @@ class UserProfile(TimeStampedModel, SoftDeletableModel):
     def __str__(self):
         return f"{self.id} {self.nickname} {self.characters} {self.novice} {self.dmId}"
 
+# TODO: tengo que revisar que otra data es necesaria dentro de este modelo 
+# TODO: o si se puede agregar al modelo de userprofile
 class Dm(TimeStampedModel, SoftDeletableModel):
     name = models.CharField(max_length=150, null=False, blank=False)
     dmParty = models.ManyToManyField('Party')

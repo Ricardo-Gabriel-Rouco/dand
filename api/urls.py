@@ -4,7 +4,7 @@ from api import views
 from .authentication import urls as auth_urls
 
 router = routers.DefaultRouter()
-router.register(r'profiles', views.UserProfileViewSets)
+router.register(r'profile', views.UserProfileViewSets)
 router.register(r'dm', views.DmViewSets)
 router.register(r'characters', views.CharacterViewSets)
 router.register(r'party', views.PartyViewSets)
