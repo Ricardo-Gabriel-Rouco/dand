@@ -7,11 +7,14 @@ from .serializer import (
     RelationSerializer,
     DesireSerializer,
     UserProfileSerializer,
+    ArchetypeSerializer,
+    EconomicSerializer
 )
-from .models import User, Characters, Dm, Party, Desires, Relations, UserProfile
+from .models import Characters, Dm, Party, Desires, Relations, UserProfile, Archetypes, EconomicStatus
 from .authentication.custom_permissions import IsOwnerOrAdmin
 
-# ! tene en cuenta por favor que estoy declarando todo en base al orden de importanci y aparicion
+# ! tene en cuenta por favor que estoy declarando todo en base al orden de importancia y aparicion
+
 
 class UserProfileViewSets(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
@@ -42,14 +45,18 @@ class DmViewSets(viewsets.ModelViewSet):
     permission_classes = [IsOwnerOrAdmin]
 
 
-class CharacterViewSets(viewsets.ModelViewSet):
-    queryset = Characters.objects.all()
-    serializer_class = CharacterSerializer
-
-
 class PartyViewSets(viewsets.ModelViewSet):
     queryset = Party.objects.all()
     serializer_class = PartySerializer
+    permission_classes = [IsOwnerOrAdmin]
+
+
+# ! OJO, acordate que tenemos dos campos extras, el creado y el dueño. hay que verificar que ambos puedan editar
+class CharacterViewSets(viewsets.ModelViewSet):
+    queryset = Characters.objects.all()
+    serializer_class = CharacterSerializer
+    permission_classes = [IsOwnerOrAdmin]
+
 
 
 class RelationViewSets(viewsets.ModelViewSet):
@@ -57,10 +64,17 @@ class RelationViewSets(viewsets.ModelViewSet):
     serializer_class = RelationSerializer
 
 
-class DesireWiewSets(viewsets.ModelViewSet):
+class DesireViewSets(viewsets.ModelViewSet):
     queryset = Desires.objects.all()
     serializer_class = DesireSerializer
 
+class EconomicViewSets(viewsets.ModelViewSet):
+    queryset = EconomicStatus.objects.all()
+    serializer_class = EconomicSerializer
+
+class ArchetypeSerializer(viewsets.ModelViewSet):
+    queryset = Archetypes.objects.all()
+    serializer_class = ArchetypeSerializer
 
 # clase principal que determina si uno es admin o es propietario
 
