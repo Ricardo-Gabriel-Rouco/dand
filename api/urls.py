@@ -8,7 +8,7 @@ router.register(r'profile', views.UserProfileViewSets)
 router.register(r'dm', views.DmViewSets)
 router.register(r'characters', views.CharacterViewSets)
 router.register(r'party', views.PartyViewSets)
-router.register(r'desires', views.DesireWiewSets, basename="desires")
+router.register(r'desires', views.DesireViewSets, basename="desires")
 router.register(r'relations', views.RelationViewSets, basename="relations")
 
 

@@ -36,7 +36,7 @@ class Party(TimeStampedModel, SoftDeletableModel):
     partyState = models.CharField(max_length=150,choices=partyStatus, blank=False, null=False)
     partyIntro = models.TextField(blank=False, null=False)
     partyRules = models.TextField(blank=False, null=False)
-    members = models.ForeignKey(User, on_delete=models.CASCADE)
+    members = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     published = models.BooleanField(default=False)
     chars_playing = models.ForeignKey("Characters", on_delete=models.CASCADE, blank=True, null=True)
     
@@ -52,6 +52,8 @@ class Characters(TimeStampedModel, SoftDeletableModel):
     modifiers = models.JSONField(null=False, blank=False)
     healthPoints = models.IntegerField(blank=False, null=False, default=1)
     image = models.CharField(max_length=500,blank=True, null=True)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True , related_name="character_creator")
+    player = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="character_player")
     # Pure Good Society
     desires = models.ForeignKey("Desires", on_delete=models.PROTECT, blank=True, null=True)
     relationships = models.ForeignKey("Relations", on_delete=models.PROTECT, blank=True, null=True)

@@ -1,5 +1,4 @@
 from rest_framework import viewsets
-from rest_framework.response import Response
 from .serializer import (
     CharacterSerializer,
     DmSerializer,
@@ -8,10 +7,19 @@ from .serializer import (
     DesireSerializer,
     UserProfileSerializer,
     ArchetypeSerializer,
-    EconomicSerializer
+    EconomicSerializer,
 )
-from .models import Characters, Dm, Party, Desires, Relations, UserProfile, Archetypes, EconomicStatus
-from .authentication.custom_permissions import IsOwnerOrAdmin
+from .models import (
+    Characters,
+    Dm,
+    Party,
+    Desires,
+    Relations,
+    UserProfile,
+    Archetypes,
+    EconomicStatus,
+)
+from .authentication.custom_permissions import IsOwnerOrAdmin, IsCharacterOwnerOrCreator,ReadOnly
 
 # ! tene en cuenta por favor que estoy declarando todo en base al orden de importancia y aparicion
 
@@ -55,26 +63,42 @@ class PartyViewSets(viewsets.ModelViewSet):
 class CharacterViewSets(viewsets.ModelViewSet):
     queryset = Characters.objects.all()
     serializer_class = CharacterSerializer
-    permission_classes = [IsOwnerOrAdmin]
+    permission_classes = [IsCharacterOwnerOrCreator]
 
+    def has_permission(self, request, view):
+        if request.method == "DELETE":
+            obj = self.get_object()
+            return request.user == obj.creator
+        return True
 
-
+# * esto tiene permiso de solo escritura ya que esto cambia solo si hay una actualizacion en el reglamento del juego
 class RelationViewSets(viewsets.ModelViewSet):
     queryset = Relations.objects.all()
     serializer_class = RelationSerializer
+    permission_classes = [ReadOnly]
+    
 
 
 class DesireViewSets(viewsets.ModelViewSet):
     queryset = Desires.objects.all()
     serializer_class = DesireSerializer
+    permission_classes = [ReadOnly]
+    
+
 
 class EconomicViewSets(viewsets.ModelViewSet):
     queryset = EconomicStatus.objects.all()
     serializer_class = EconomicSerializer
+    permission_classes = [ReadOnly]
+    
+
 
 class ArchetypeSerializer(viewsets.ModelViewSet):
     queryset = Archetypes.objects.all()
     serializer_class = ArchetypeSerializer
+    permission_classes = [ReadOnly]
+    
+
 
 # clase principal que determina si uno es admin o es propietario
 
